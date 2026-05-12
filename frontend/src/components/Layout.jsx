@@ -19,6 +19,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import WorkspacesIcon from "@mui/icons-material/Workspaces";
 import CategoryIcon from "@mui/icons-material/Category";
+import LanguageSwitcher from "./LanguageSwitcher";
 
 // use relative path to load Logo
 import volcanoLogo from "../assets/volcano-icon-color.svg";
@@ -75,6 +76,8 @@ const Layout = () => {
                     >
                         Volcano Dashboard
                     </Typography>
+                    <Box sx={{ flexGrow: 1 }} />
+                    <LanguageSwitcher />
                 </Toolbar>
             </AppBar>
 

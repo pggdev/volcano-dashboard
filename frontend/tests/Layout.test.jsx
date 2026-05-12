@@ -1,6 +1,7 @@
 import Layout from "../src/components/Layout";
 import { MemoryRouter } from "react-router-dom";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import i18n from "../src/i18n";
 
 const menuItems = [
     { text: "Dashboard", path: "/dashboard" },
@@ -11,6 +12,11 @@ const menuItems = [
 ];
 
 describe("Layout", () => {
+    beforeEach(async () => {
+        localStorage.clear();
+        await i18n.changeLanguage("en");
+    });
+
     it("should render the layout", () => {
         render(
             <MemoryRouter>
@@ -78,5 +84,25 @@ describe("Layout", () => {
             "src",
             "/src/assets/volcano-icon-color.svg",
         );
+    });
+
+    it("should switch and persist the selected language", async () => {
+        render(
+            <MemoryRouter>
+                <Layout />
+            </MemoryRouter>,
+        );
+
+        const englishButton = screen.getByRole("button", { name: "EN" });
+        const chineseButton = screen.getByRole("button", { name: "中文" });
+
+        expect(englishButton).toHaveAttribute("aria-pressed", "true");
+
+        fireEvent.click(chineseButton);
+
+        await waitFor(() => {
+            expect(chineseButton).toHaveAttribute("aria-pressed", "true");
+        });
+        expect(localStorage.getItem("i18nextLng")).toBe("zh-CN");
     });
 });
